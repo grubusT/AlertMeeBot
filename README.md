@@ -33,4 +33,12 @@ The bot holds no political views or opinions towards the president.
 - Implement a web dashboard
 - Include sentiment analysis
 - Implement stock prediction analysis based off news
+
+**License**
+MIT License
+
+**Acknowledgements**
+- python-telegram-bot
+- Alpha Vantage API
+
    
