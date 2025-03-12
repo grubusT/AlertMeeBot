@@ -1,6 +1,7 @@
 import json #api key not yet commited
 import requests
 from datetime import datetime, timedelta 
+from config import ALPHA_VANTAGE_API_KEY
 
 async def fetch_trump_news(for_alerts=False):
     global last_check_time, alert_sent_articles
