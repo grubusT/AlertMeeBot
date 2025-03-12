@@ -7,9 +7,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
 from news_service import fetch_trump_news, load_subscribers, save_subscribers
-
-# Configuration (hidden)
-
+from config import TELEGRAM_TOKEN, CHECK_INTERVAL
 
 # Track users subscibed to alerts
 subscribers = set()
