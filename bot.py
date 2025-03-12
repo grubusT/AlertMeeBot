@@ -18,6 +18,33 @@ last_check_time = datetime.now()
 
 
 # Command handlers
+async def fetch_voo_price():
+    """Fetch the latest stock price of VOO using Alpha Vantage."""
+    url = "https://www.alphavantage.co/query"
+    params = {
+        "function": "GLOBAL_QUOTE",
+        "symbol": "VOO",
+        "apikey": ALPHA_VANTAGE_API_KEY,
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        
+        if "Global Quote" in data:
+            voo_data = data["Global Quote"]
+            return {
+                "price": voo_data.get("05. price", "N/A"),
+                "change": voo_data.get("09. change", "N/A"),
+                "change_percent": voo_data.get("10. change percent", "N/A"),
+            }
+        else:
+            print("Error fetching VOO data: No 'Global Quote' found in response")
+            return None
+    except Exception as e:
+        print(f"Error fetching VOO data: {e}")
+        return None
+        
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start the bot."""
     user_id = update.effective_user.id
@@ -51,15 +78,29 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def get_latest(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """News request on demand."""
+    """Send latest Trump news on demand."""
     await update.message.reply_text("Fetching the latest Trump news... ⏳")
     
-    # Use for_alerts=False to get ALL recent Trump news without filtering previously sent ones
-    articles = await fetch_trump_news(for_alerts=False) #adjusted to send to multiple people without filtering
+    # Fetch Trump news articles
+    articles = await fetch_trump_news(for_alerts=False)  # Adjusted to send to multiple people without filtering
     
     if not articles:
-        await update.message.reply_text("No recent Trump news found. Try again later.") #
+        await update.message.reply_text("No recent Trump news found. Try again later.")
         return
+    
+    # Fetch the latest VOO price
+    voo_data = await fetch_voo_price()
+    
+    # Prepare the VOO price message
+    voo_message = ""
+    if voo_data:
+        voo_message = (
+            "\n\n📈 *S&P Tracker*\n"
+            f"Price: ${voo_data['price']}\n"
+            f"Change: {voo_data['change']} ({voo_data['change_percent']})\n"
+        )
+    else:
+        voo_message = "\n\n📈 *VOO Tracker*\nUnable to fetch VOO data at the moment.\n"
     
     # Send up to 5 latest articles
     for article in articles[:5]:
@@ -82,6 +123,9 @@ async def get_latest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 
         news_text += f"\n[Read full article]({article['url']})"
         
+        # Append VOO tracker information
+        news_text += voo_message
+        
         await update.message.reply_text(news_text, parse_mode="Markdown")
 
 # Periodic news check and alert function
@@ -90,11 +134,25 @@ async def check_news_and_alert(context: ContextTypes.DEFAULT_TYPE):
     if not subscribers:
         return  # No subscribers to alert
     
-    # Use for_alerts=True to only get articles we haven't sent alerts for
+    # Fetch new Trump news articles
     articles = await fetch_trump_news(for_alerts=True)
     
     if not articles:
         return  # No new articles
+    
+    # Fetch the latest VOO price
+    voo_data = await fetch_voo_price()
+    
+    # Prepare the VOO price message
+    voo_message = ""
+    if voo_data:
+        voo_message = (
+            "\n\n📈 *VOO Tracker*\n"
+            f"Price: ${voo_data['price']}\n"
+            f"Change: {voo_data['change']} ({voo_data['change_percent']})\n"
+        )
+    else:
+        voo_message = "\n\n📈 *VOO Tracker*\nUnable to fetch VOO data at the moment.\n"
     
     # Send notifications to all subscribers (limit to 3 newest articles)
     for article in articles[:3]:
@@ -117,6 +175,9 @@ async def check_news_and_alert(context: ContextTypes.DEFAULT_TYPE):
                 news_text += f"Published: {article['time_published']}\n"
                 
         news_text += f"\n[Read full article]({article['url']})"
+        
+        # Append VOO tracker information
+        news_text += voo_message
         
         for user_id in subscribers:
             try:
