@@ -1,0 +1,10 @@
+import os
+
+# Bot configuration
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8046862604:AAHhzXNCZowa3OCdTKsCf54qDDAxWbCCf8Q")
+ALPHA_VANTAGE_API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY", "YWBWKOL7A0CJRCCA")
+
+# News service configuration
+CHECK_INTERVAL = 900  # 15 minutes
+MAX_ARTICLES_ALERT = 3
+MAX_ARTICLES_LATEST = 5
