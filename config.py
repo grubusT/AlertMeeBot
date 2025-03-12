@@ -6,7 +6,7 @@ load_dotenv()
 
 #.env file stored securely
 API_KEY = os.getenv("API_KEY") 
-SECRET_KEY = os.getenv("SECRET_KEY")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
 # News service configuration
 CHECK_INTERVAL = 900  # 15 minutes
