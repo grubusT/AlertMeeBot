@@ -5,10 +5,10 @@ Access here: t.me/AlertMeeBot
 The bot holds no political views or opinions towards the president. 
 
 **Features**
-- Periodically fetches the latest news articles related to Donald Trump.
-- Uses the Alpha Vantage API to retrieve market-related news.
-- Sends updates to a Telegram chat using the Telegram API.
-- Can be deployed on a server or run locally for continuous updates.
+- Periodically fetches the latest news articles related to Donald Trump
+- Uses the Alpha Vantage API to retrieve market-related news
+- Sends updates to a Telegram chat using the Telegram API
+- Can be deployed on a server or run locally for continuous updates
 - On-demand news using the /latest command
 - Can support personal chats or group conversations, a little news in your group chat!!
 
