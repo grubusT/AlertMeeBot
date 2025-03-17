@@ -11,12 +11,14 @@ The bot holds no political views or opinions towards the president.
 - Can be deployed on a server or run locally for continuous updates
 - On-demand news using the /latest command
 - Can support personal chats or group conversations, a little news in your group chat!!
+- Provides a sentiment rating based off how postive or negative the article appears
 
 **Commands**
 - /start - Subscribe to Trump news alerts
 - /stop - Unsubscribe from alerts
 - /latest - Get the latest news articles on demand
-- /help - Display available commands
+- /help - Display available commands and sentiment indicators
+- /preferences - set your sentiment preferences
 
 **Tech Stack**
 - Python: Main programming language
@@ -24,14 +26,13 @@ The bot holds no political views or opinions towards the president.
 - Alpha Vantage API: For fetching financial and market-related news
 - requests: To make HTTP requests
 - dotenv: To manage API keys securely
+- nltk - Sentiment analysis through semantic reasoning
 
 **Future improvements**
-- Add live stock alerts tied to each article with real-time prices
 - Add additonal sources of news
 - Extend beyond trump-related news (maybe Elon)
 - Add filtering capability based on keywords
 - Implement a web dashboard
-- Include sentiment analysis
 - Implement stock prediction analysis based off news
 
 **License**
@@ -40,5 +41,6 @@ MIT License
 **Acknowledgements**
 - python-telegram-bot
 - Alpha Vantage API
+
 
    
